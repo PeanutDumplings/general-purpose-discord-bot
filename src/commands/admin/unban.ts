@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, type ColorResolvable, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { ChannelType, ChatInputCommandInteraction, type ColorResolvable, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { CommandConfig } from "../../classes/CommandConfig";
 import { Command } from "../../classes/Command";
 import config from "../../config";
@@ -15,9 +15,23 @@ const command = async (interaction: ChatInputCommandInteraction) => {
     const user = interaction.options.getUser("userid");
 
     const embed = new EmbedBuilder().setColor(config.colours.success as ColorResolvable);
+    const loggingEmbed = new EmbedBuilder().setColor(config.colours.blurple as ColorResolvable);
 
     try {
         await interaction.guild?.bans.remove(user!);
+        const logsChannel = await interaction.guild?.channels.fetch(config.channels.logs);
+        if (!logsChannel || logsChannel.type !== ChannelType.GuildText) {
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(config.colours.failure as ColorResolvable)
+                        .setDescription("Invalid logs channel. Please update `config.yaml` with a valid text channel id"),
+                ],
+            });
+        }
+
+        await logsChannel.send({ embeds: [loggingEmbed] });
+
         return await interaction.reply({
             embeds: [embed.setDescription(`${config.emojis.success} ${user} was successfully unbanned`)],
         });
