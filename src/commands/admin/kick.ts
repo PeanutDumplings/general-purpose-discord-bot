@@ -1,12 +1,4 @@
-import {
-    ChannelType,
-    ChatInputCommandInteraction,
-    type ColorResolvable,
-    Embed,
-    EmbedBuilder,
-    PermissionFlagsBits,
-    SlashCommandBuilder,
-} from "discord.js";
+import { ChannelType, ChatInputCommandInteraction, type ColorResolvable, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { CommandConfig } from "../../classes/CommandConfig";
 import { Command } from "../../classes/Command";
 import config from "../../config";
