@@ -1,0 +1,4 @@
+ban (user, reason)
+kick (user, reason)
+mute (user, reason, duration?)
+purge (channel, messages, member?)

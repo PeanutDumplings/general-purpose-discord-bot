@@ -24,9 +24,6 @@ const commandConfig = new CommandConfig(commandBuilder);
 const command = async (interaction: ChatInputCommandInteraction) => {
     const user = await interaction.guild?.members.fetch(interaction.options.getUser("user")?.id!);
     const reason = interaction.options.getString("reason");
-
-    console.log(reason);
-
     const member = await interaction.guild?.members.fetch(interaction.user.id);
 
     const userEmbed = new EmbedBuilder().setColor(config.colours.failure as ColorResolvable);
@@ -56,7 +53,9 @@ const command = async (interaction: ChatInputCommandInteraction) => {
 
     if (user?.user.id === interaction.client.user.id) {
         return await interaction.reply({
-            embeds: [serverEmbed.setDescription(`${config.emojis.error} You cannot this bot`).setColor(config.colours.failure as ColorResolvable)],
+            embeds: [
+                serverEmbed.setDescription(`${config.emojis.error} You cannot kick this bot`).setColor(config.colours.failure as ColorResolvable),
+            ],
             ephemeral: true,
         });
     }
@@ -85,7 +84,7 @@ const command = async (interaction: ChatInputCommandInteraction) => {
     serverEmbed.setTitle("Kicked");
     serverEmbed.setDescription(
         [
-            `**User**: \`${user}\` (${user?.id})`,
+            `**User**: ${user} (${user?.id})`,
             `**Moderator**: ${member?.user} (${member?.user.id})`,
             `**Reason**: \`${reason ? reason : "no reason provided"}\``,
         ].join("\n")
@@ -106,6 +105,12 @@ const command = async (interaction: ChatInputCommandInteraction) => {
     await user?.send({ embeds: [userEmbed] });
     await user?.kick();
     await logsChannel.send({ embeds: [serverEmbed] });
-    return await interaction.reply({ embeds: [new EmbedBuilder().setDescription(`${config.emojis.success} ***${user}*** was kicked`)] });
+    return await interaction.reply({
+        embeds: [
+            new EmbedBuilder()
+                .setDescription(`${config.emojis.success} ***${user}*** was kicked`)
+                .setColor(config.colours.success as ColorResolvable),
+        ],
+    });
 };
 export default new Command(commandConfig, command);
