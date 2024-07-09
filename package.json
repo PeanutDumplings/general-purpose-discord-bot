@@ -1,0 +1,28 @@
+{
+  "name": "general-purpose-discord-bot",
+  "module": "index.ts",
+  "type": "module",
+  "author": {
+    "name": "PeanutDumplings"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start:dev": "bun src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/js-yaml": "^4.0.9",
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "eslint": "^9.6.0",
+    "prettier": "^3.3.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "discord.js": "^14.15.3",
+    "js-yaml": "^4.1.0"
+  }
+}
