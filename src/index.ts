@@ -5,6 +5,7 @@ import fs from "node:fs";
 import { Client, GatewayIntentBits } from "discord.js";
 import config from "./config";
 import setCommands from "./functions/setCommands";
+import setEvents from "./functions/setEvents";
 
 if (!fs.existsSync("config.yaml")) {
     console.error(chalk.bold(chalk.red('[Aborted] Unable to find configuration file.\nMake sure "config.yaml" exists at the root of this directory')));
@@ -25,9 +26,7 @@ export const client = new Client({
     ],
 });
 
-client.commands;
+client.commands = await setCommands();
+client.events = await setEvents();
 
-client.login(config.discordBotToken).then(async () => {
-    client.commands = await setCommands();
-    console.log("bot started");
-});
+client.login(config.discordBotToken);
