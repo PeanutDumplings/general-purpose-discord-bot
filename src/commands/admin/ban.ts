@@ -21,27 +21,27 @@ const command = async (interaction: ChatInputCommandInteraction) => {
     const userEmbed = new EmbedBuilder().setColor(config.colours.failure as ColorResolvable);
     const serverEmbed = new EmbedBuilder().setColor(config.colours.blurple as ColorResolvable);
 
-    // if (user?.user.id === member?.user.id) {
-    //     return await interaction.reply({
-    //         embeds: [
-    //             serverEmbed.setDescription(`${config.emojis.error} You cannot ban yourself`).setColor(config.colours.failure as ColorResolvable),
-    //         ],
-    //         ephemeral: true,
-    //     });
-    // }
+    if (user?.user.id === member?.user.id) {
+        return await interaction.reply({
+            embeds: [
+                serverEmbed.setDescription(`${config.emojis.error} You cannot ban yourself`).setColor(config.colours.failure as ColorResolvable),
+            ],
+            ephemeral: true,
+        });
+    }
 
-    // if (user?.roles.highest!! >= member?.roles.highest!) {
-    //     return await interaction.reply({
-    //         embeds: [
-    //             serverEmbed
-    //                 .setDescription(
-    //                     `${config.emojis.error} You cannot ban ${user?.user}\n**Reason:** Your top role is not higher than ${user?.user}'s`
-    //                 )
-    //                 .setColor(config.colours.failure as ColorResolvable),
-    //         ],
-    //         ephemeral: true,
-    //     });
-    // }
+    if (user?.roles.highest!! >= member?.roles.highest!) {
+        return await interaction.reply({
+            embeds: [
+                serverEmbed
+                    .setDescription(
+                        `${config.emojis.error} You cannot ban ${user?.user}\n**Reason:** Your top role is not higher than ${user?.user}'s`
+                    )
+                    .setColor(config.colours.failure as ColorResolvable),
+            ],
+            ephemeral: true,
+        });
+    }
 
     if (user?.user.id === interaction.client.user.id) {
         return await interaction.reply({
