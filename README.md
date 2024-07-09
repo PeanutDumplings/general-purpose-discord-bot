@@ -1,15 +1,29 @@
-# 1---general-purpose-discord-bot
+# General Purpose Discord Bot
 
-To install dependencies:
+_An extendable Discord Bot that has many built in commands and events_
 
-```bash
-bun install
+## To install
+
+**Clone the repository**
+
+```sh
+git clone "https://github.com/PeanutDumplings/general-purpose-discord-bot.git"
 ```
 
-To run:
+**CD into the directory**
 
-```bash
-bun run index.ts
+```sh
+cd general-purpose-discord-bot
 ```
 
-This project was created using `bun init` in bun v1.1.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+**Install dependencies**
+
+```sh
+[npm | pnpm | bun] install
+```
+
+**Copy config file and enter in your details**
+
+```
+cp config.example.yaml config.yaml
+```
