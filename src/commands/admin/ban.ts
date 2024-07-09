@@ -30,7 +30,7 @@ const command = async (interaction: ChatInputCommandInteraction) => {
         });
     }
 
-    if (user?.roles.highest!! >= member?.roles.highest!) {
+    if (user?.roles.highest! >= member?.roles.highest!) {
         return await interaction.reply({
             embeds: [
                 serverEmbed
