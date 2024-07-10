@@ -1,9 +1,12 @@
-import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { CommandConfig } from "../../classes/CommandConfig";
 import { Command } from "../../classes/Command";
 import config from "../../config";
 
-const commandBuilder = new SlashCommandBuilder().setName("purge").setDescription("Purge a specific number of messages from a channel");
+const commandBuilder = new SlashCommandBuilder()
+    .setName("purge")
+    .setDescription("Purge a specific number of messages from a channel")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages);
 commandBuilder.addNumberOption((option) => option.setName("amount").setDescription("Amount of messages to purge").setRequired(true));
 commandBuilder.addUserOption((option) =>
     option.setName("user").setDescription("User to purge messages of (defaults to all users)").setRequired(false)
