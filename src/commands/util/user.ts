@@ -19,6 +19,13 @@ commandBuilder.addSubcommand((subcommand) =>
         .addUserOption((option) => option.setName("user").setDescription("The user to get the banner of"))
 );
 
+commandBuilder.addSubcommand((subcommand) =>
+    subcommand
+        .setName("info")
+        .setDescription("Get your user info, or someone else's user info")
+        .addUserOption((option) => option.setName("user").setDescription("The user to get info of"))
+);
+
 const commandConfig = new CommandConfig(commandBuilder);
 
 const command = async (interaction: ChatInputCommandInteraction) => {
@@ -66,6 +73,45 @@ const command = async (interaction: ChatInputCommandInteraction) => {
             embeds: [embed],
             components: [row],
         });
+    } else if (subcommand === "info") {
+        await user.fetch(true);
+        console.log(user.createdAt, user.createdTimestamp);
+
+        const member = await interaction.guild?.members.fetch(user.id);
+        if (!member) {
+            return;
+        }
+
+        embed.setThumbnail(user.displayAvatarURL({ size: 4096, forceStatic: false }));
+        if (user.banner) embed.setImage(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}.webp?size=2048`);
+        embed.addFields(
+            {
+                name: "Username",
+                value: user.username,
+                inline: true,
+            },
+            {
+                name: "User Id",
+                value: user.id,
+                inline: true,
+            },
+            {
+                name: "Display Name",
+                value: user.displayName,
+            },
+            {
+                name: "Joined Discord",
+                value: `<t:${Math.floor(user.createdTimestamp / 1000)}:D>`,
+                inline: true,
+            },
+            {
+                name: `Joined ${interaction.guild?.name}`,
+                value: `<t:${Math.floor(member.joinedTimestamp! / 1000)}:D>`,
+                inline: true,
+            }
+        );
+
+        return await interaction.reply({ embeds: [embed] });
     }
 };
 
