@@ -24,8 +24,6 @@ export default async function setCommands(): Promise<Collection<string, Command>
         }
     }
 
-    return commands;
-
     const rest = new REST({ version: "10" }).setToken(config.discordBotToken);
     return new Promise((resolve, reject) => {
         (async () => {
