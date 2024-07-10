@@ -17,8 +17,6 @@ const command = async (interaction: ChatInputCommandInteraction) => {
     const amount = interaction.options.getNumber("amount");
     let user = await interaction.guild?.members.fetch(interaction.options.getUser("user")?.id!);
 
-    console.log(amount, user?.id);
-
     if (interaction.channel?.type !== ChannelType.GuildText) {
         return await interaction.reply({
             content: "This command must be ran in a guild text channel",
@@ -44,21 +42,24 @@ const command = async (interaction: ChatInputCommandInteraction) => {
         });
     }
 
-    let messagesDeleted = 0;
-
     if (user?.id) {
+        let messagesDeleted = 0;
         interaction.channel.messages
             .fetch()
-            .then((messages) => {
+            .then(async (messages) => {
                 const userMessages = messages.filter((message) => message.author.id === user.id);
 
-                userMessages.forEach((msg) => {
-                    if (messagesDeleted < amount) {
-                        msg.delete().then(() => messagesDeleted++);
+                for (const msg of userMessages) {
+                    if (messagesDeleted >= amount) break;
+
+                    try {
+                        await msg[1].delete();
+                        messagesDeleted++;
+                    } catch (error) {
+                        throw new Error(`Error: ${error}`);
                     }
-                });
-            })
-            .then(async () => {
+                }
+
                 await logsChannel.send({
                     embeds: [
                         logsEmbed
@@ -73,10 +74,17 @@ const command = async (interaction: ChatInputCommandInteraction) => {
                             ),
                     ],
                 });
-                return await interaction.reply({
-                    embeds: [embed.setDescription(`${config.emojis.success} Deleted ${amount} ${amount > 1 ? "messages" : "message"} from ${user}`)],
+
+                await interaction.reply({
+                    embeds: [
+                        embed.setDescription(
+                            `${config.emojis.success} Deleted ${messagesDeleted} ${messagesDeleted > 1 ? "messages" : "message"} from ${user}`
+                        ),
+                    ],
+                    ephemeral: true,
                 });
-            });
+            })
+            .catch(console.error);
     } else {
         await interaction.channel.bulkDelete(amount);
         await logsChannel.send({
@@ -94,6 +102,7 @@ const command = async (interaction: ChatInputCommandInteraction) => {
         });
         return await interaction.reply({
             embeds: [embed.setDescription(`${config.emojis.success} Deleted ${amount} ${amount > 1 ? "messages" : "message"}`)],
+            ephemeral: true,
         });
     }
 };
