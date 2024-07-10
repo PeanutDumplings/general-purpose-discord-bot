@@ -30,12 +30,19 @@ const command = async (interaction: ChatInputCommandInteraction) => {
             });
         }
 
-        await logsChannel.send({ embeds: [loggingEmbed] });
+        await logsChannel.send({
+            embeds: [
+                loggingEmbed
+                    .setTitle("Unbanned")
+                    .setDescription([`**User**: ${user} (${user?.id})`, `**Moderator**: ${interaction.user} (${interaction.user.id})`].join("\n")),
+            ],
+        });
 
         return await interaction.reply({
             embeds: [embed.setDescription(`${config.emojis.success} ${user} was successfully unbanned`)],
         });
     } catch (error) {
+        console.error(error);
         return await interaction.reply({
             embeds: [embed.setColor(config.colours.failure as ColorResolvable).setDescription(`${user} is not banned`)],
             ephemeral: true,
