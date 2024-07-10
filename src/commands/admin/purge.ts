@@ -1,4 +1,4 @@
-import { channelLink, ChannelType, ChatInputCommandInteraction, type ColorResolvable, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { CommandConfig } from "../../classes/CommandConfig";
 import { Command } from "../../classes/Command";
 import config from "../../config";
@@ -12,8 +12,8 @@ commandBuilder.addUserOption((option) =>
 const commandConfig = new CommandConfig(commandBuilder);
 
 const command = async (interaction: ChatInputCommandInteraction) => {
-    const embed = new EmbedBuilder().setColor(config.colours.success as ColorResolvable);
-    const logsEmbed = new EmbedBuilder().setColor(config.colours.blurple as ColorResolvable);
+    const embed = new EmbedBuilder().setColor(config.colours.success);
+    const logsEmbed = new EmbedBuilder().setColor(config.colours.blurple);
     const amount = interaction.options.getNumber("amount");
     let user = await interaction.guild?.members.fetch(interaction.options.getUser("user")?.id!);
 
@@ -36,7 +36,7 @@ const command = async (interaction: ChatInputCommandInteraction) => {
         return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setColor(config.colours.failure as ColorResolvable)
+                    .setColor(config.colours.failure)
                     .setDescription("Invalid logs channel. Please update `config.yaml` with a valid text channel id"),
             ],
         });

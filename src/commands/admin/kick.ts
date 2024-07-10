@@ -1,4 +1,4 @@
-import { ChannelType, ChatInputCommandInteraction, type ColorResolvable, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { CommandConfig } from "../../classes/CommandConfig";
 import { Command } from "../../classes/Command";
 import config from "../../config";
@@ -18,14 +18,12 @@ const command = async (interaction: ChatInputCommandInteraction) => {
     const reason = interaction.options.getString("reason");
     const member = await interaction.guild?.members.fetch(interaction.user.id);
 
-    const userEmbed = new EmbedBuilder().setColor(config.colours.failure as ColorResolvable);
-    const serverEmbed = new EmbedBuilder().setColor(config.colours.blurple as ColorResolvable);
+    const userEmbed = new EmbedBuilder().setColor(config.colours.failure);
+    const serverEmbed = new EmbedBuilder().setColor(config.colours.blurple);
 
     if (user?.user.id === member?.user.id) {
         return await interaction.reply({
-            embeds: [
-                serverEmbed.setDescription(`${config.emojis.error} You cannot kick yourself`).setColor(config.colours.failure as ColorResolvable),
-            ],
+            embeds: [serverEmbed.setDescription(`${config.emojis.error} You cannot kick yourself`).setColor(config.colours.failure)],
             ephemeral: true,
         });
     }
@@ -37,7 +35,7 @@ const command = async (interaction: ChatInputCommandInteraction) => {
                     .setDescription(
                         `${config.emojis.error} You cannot kick ${user?.user}\n**Reason:** Your top role is not higher than ${user?.user}'s`
                     )
-                    .setColor(config.colours.failure as ColorResolvable),
+                    .setColor(config.colours.failure),
             ],
             ephemeral: true,
         });
@@ -45,20 +43,14 @@ const command = async (interaction: ChatInputCommandInteraction) => {
 
     if (user?.user.id === interaction.client.user.id) {
         return await interaction.reply({
-            embeds: [
-                serverEmbed.setDescription(`${config.emojis.error} You cannot kick this bot`).setColor(config.colours.failure as ColorResolvable),
-            ],
+            embeds: [serverEmbed.setDescription(`${config.emojis.error} You cannot kick this bot`).setColor(config.colours.failure)],
             ephemeral: true,
         });
     }
 
     if (!user?.kickable) {
         return await interaction.reply({
-            embeds: [
-                serverEmbed
-                    .setDescription(`${config.emojis.error} ${user} cannot be kicked by me`)
-                    .setColor(config.colours.failure as ColorResolvable),
-            ],
+            embeds: [serverEmbed.setDescription(`${config.emojis.error} ${user} cannot be kicked by me`).setColor(config.colours.failure)],
             ephemeral: true,
         });
     }
@@ -81,14 +73,14 @@ const command = async (interaction: ChatInputCommandInteraction) => {
             `**Reason**: \`${reason ? reason : "no reason provided"}\``,
         ].join("\n")
     );
-    serverEmbed.setColor(config.colours.blurple as ColorResolvable);
+    serverEmbed.setColor(config.colours.blurple);
 
     const logsChannel = await interaction.guild?.channels.fetch(config.channels.logs);
     if (!logsChannel || logsChannel.type !== ChannelType.GuildText) {
         return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setColor(config.colours.failure as ColorResolvable)
+                    .setColor(config.colours.failure)
                     .setDescription("Invalid logs channel. Please update `config.yaml` with a valid text channel id"),
             ],
         });
@@ -98,11 +90,7 @@ const command = async (interaction: ChatInputCommandInteraction) => {
     await user?.kick();
     await logsChannel.send({ embeds: [serverEmbed] });
     return await interaction.reply({
-        embeds: [
-            new EmbedBuilder()
-                .setDescription(`${config.emojis.success} ***${user}*** was kicked`)
-                .setColor(config.colours.success as ColorResolvable),
-        ],
+        embeds: [new EmbedBuilder().setDescription(`${config.emojis.success} ***${user}*** was kicked`).setColor(config.colours.success)],
     });
 };
 export default new Command(commandConfig, command);

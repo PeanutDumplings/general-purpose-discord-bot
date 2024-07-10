@@ -1,13 +1,18 @@
+# The token of your discord bot/app
 discordBotToken: ""
+# the id of you discord bot/app
 discordBotClientID: ""
+# the channel id of your logs channel
 channels:
   logs: ""
+# the colours you want embeds to have in the format 0x{hex}. E.g. #14e913 -> 0x14e913
 colours:
-  success: ""
-  failure: ""
-  warning: ""
-  blurple: ""
-  clear: ""
+  success: 
+  failure: 
+  warning: 
+  blurple: 
+  clear: 
+# The ids of your emojis that will appear in bot messages and embeds
 emojis:
   success: ""
   error: ""

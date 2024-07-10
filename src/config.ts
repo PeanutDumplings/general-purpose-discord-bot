@@ -7,11 +7,11 @@ interface Config {
         logs: string;
     };
     colours: {
-        success: string;
-        failure: string;
-        warning: string;
-        blurple: string;
-        clear: string;
+        success: number;
+        failure: number;
+        warning: number;
+        blurple: number;
+        clear: number;
     };
     emojis: {
         arrow: string;
